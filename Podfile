@@ -1,1 +1,1 @@
-pod 'AlgoliaSearch-Client', '~> 3.4'
+pod 'AlgoliaSearch-Client', '~> 3.5'
