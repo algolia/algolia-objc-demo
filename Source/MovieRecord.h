@@ -29,7 +29,7 @@
 
 @property (nonatomic) NSString *title;
 @property (nonatomic) NSString *image;
-@property (nonatomic) NSNumber *rating;
-@property (nonatomic) NSNumber *year;
+@property (nonatomic) NSInteger rating;
+@property (nonatomic) NSInteger year;
 
 @end

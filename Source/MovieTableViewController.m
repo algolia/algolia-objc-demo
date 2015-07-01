@@ -29,57 +29,58 @@
 
 @interface MovieTableViewController ()
 
-@property (nonatomic) UISearchController *searchController;
-
-@property (nonatomic) ASRemoteIndex *movieIndex;
-@property (nonatomic) ASQuery *query;
-
-@property (nonatomic) NSMutableArray *movies;
-
-@property (nonatomic) NSNumber *searchId;
-@property (nonatomic) NSNumber *displayedSearchId;
-@property (nonatomic) NSNumber *loadedPage;
-@property (nonatomic) NSNumber *nbPages;
-
-@property (nonatomic) UIImage *placeholder;
+-(void) loadMore;
 
 @end
 
-@implementation MovieTableViewController
+@implementation MovieTableViewController {
+    UISearchController *searchController;
+
+    ASRemoteIndex *movieIndex;
+    ASQuery *query;
+    
+    NSMutableArray *movies;
+    
+    NSInteger searchId;
+    NSInteger displayedSearchId;
+    NSUInteger loadedPage;
+    NSUInteger nbPages;
+    
+    UIImage *placeholder;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     // Search controller
-    self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
-    self.searchController.searchResultsUpdater = self;
-    self.searchController.dimsBackgroundDuringPresentation = NO;
-    self.searchController.searchBar.delegate = self;
+    searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+    searchController.searchResultsUpdater = self;
+    searchController.dimsBackgroundDuringPresentation = NO;
+    searchController.searchBar.delegate = self;
     
     // Add the search bar
-    self.tableView.tableHeaderView = self.searchController.searchBar;
+    self.tableView.tableHeaderView = searchController.searchBar;
     self.definesPresentationContext = YES;
-    [self.searchController.searchBar sizeToFit];
+    [searchController.searchBar sizeToFit];
     
     // Algolia Search
     ASAPIClient *apiClient = [ASAPIClient apiClientWithApplicationID:@"latency" apiKey:@"dce4286c2833e8cf4b7b1f2d3fa1dbcb"];
-    self.movieIndex = [apiClient getIndex:@"movies"];
+    movieIndex = [apiClient getIndex:@"movies"];
     
-    self.query = [[ASQuery alloc] init];
-    self.query.attributesToRetrieve = @[@"title", @"image", @"rating", @"year"];
-    self.query.attributesToHighlight = @[@"title"];
+    query = [[ASQuery alloc] init];
+    query.attributesToRetrieve = @[@"title", @"image", @"rating", @"year"];
+    query.attributesToHighlight = @[@"title"];
     
-    self.movies = [NSMutableArray array];
-    self.searchId = 0;
-    self.displayedSearchId = [NSNumber numberWithInt:-1];
-    self.loadedPage = 0;
-    self.nbPages = 0;
+    movies = [NSMutableArray array];
+    searchId = 0;
+    displayedSearchId = -1;
+    loadedPage = 0;
+    nbPages = 0;
     
-    self.placeholder = [UIImage imageNamed:@"white"];
-    
+    placeholder = [UIImage imageNamed:@"white"];
     
     // First load
-    [self updateSearchResultsForSearchController:self.searchController];
+    [self updateSearchResultsForSearchController:searchController];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -94,26 +95,25 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.movies count];
+    return [movies count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"movieCell" forIndexPath:indexPath];
     
-    if (indexPath.row + 5 >= [self.movies count]) {
+    if (indexPath.row + 5 >= [movies count]) {
         [self loadMore];
     }
     
-    MovieRecord *movie = self.movies[indexPath.row];
+    MovieRecord *movie = movies[indexPath.row];
     cell.textLabel.highlightedTextColor = [UIColor colorWithRed:1 green:1 blue:0.898 alpha:1];
     cell.textLabel.highlightedText = movie.title;
-    //cell.textLabel.text = movie.title;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", movie.year];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld", movie.year];
     
     // Avoid loading image that we don't need anymore
     [cell.imageView cancelImageRequestOperation];
     // Load the image and display another image during the loading
-    [cell.imageView setImageWithURL:[NSURL URLWithString:movie.image] placeholderImage:self.placeholder];
+    [cell.imageView setImageWithURL:[NSURL URLWithString:movie.image] placeholderImage:placeholder];
     
     return cell;
 }
@@ -121,20 +121,20 @@
 #pragma mark - Search bar
 
 -(void) updateSearchResultsForSearchController:(UISearchController *)searchController {
-    self.query.fullTextQuery = self.searchController.searchBar.text;
-    int curSearchId = [self.searchId intValue];
+    query.fullTextQuery = self->searchController.searchBar.text;
+    NSInteger curSearchId = searchId;
     
-    [self.movieIndex search:self.query success:^(ASRemoteIndex *index, ASQuery *query, NSDictionary *result) {
-        if (curSearchId <= [self.displayedSearchId intValue]) {
+    [movieIndex search:query success:^(ASRemoteIndex *index, ASQuery *query, NSDictionary *result) {
+        if (curSearchId <= displayedSearchId) {
             return; // Newest query already displayed
         }
         
-        self.displayedSearchId = [NSNumber numberWithInt:curSearchId];
-        self.loadedPage = 0; // Reset loaded page
+        displayedSearchId = curSearchId;
+        loadedPage = 0; // Reset loaded page
         
         // Decode JSON
         NSArray *hits = result[@"hits"];
-        self.nbPages = result[@"nbPages"];
+        nbPages = [result[@"nbPages"] integerValue];
         
         NSMutableArray *tmp = [NSMutableArray array];
         for (int i = 0; i < [hits count]; ++i) {
@@ -142,30 +142,30 @@
         }
         
         // Reload view with the new data
-        [self.movies removeAllObjects];
-        [self.movies addObjectsFromArray:tmp];
+        [movies removeAllObjects];
+        [movies addObjectsFromArray:tmp];
         [self.tableView reloadData];
     } failure:nil];
     
-    self.searchId = [NSNumber numberWithInt:[self.searchId intValue] + 1];
+    ++searchId;
 }
 
 #pragma mark - Load more
 
 -(void) loadMore {
-    if ([self.loadedPage intValue] + 1 >= [self.nbPages intValue]) {
+    if (loadedPage + 1 >= nbPages) {
         return; // All pages already loaded
     }
     
-    ASQuery *nextQuery = [self.query copy];
-    nextQuery.page = [self.loadedPage intValue] + 1;
+    ASQuery *nextQuery = [query copy];
+    nextQuery.page = loadedPage + 1;
     
-    [self.movieIndex search:nextQuery success:^(ASRemoteIndex *index, ASQuery *query, NSDictionary *result) {
-        if (![nextQuery.fullTextQuery isEqualToString:self.query.fullTextQuery]) {
+    [movieIndex search:nextQuery success:^(ASRemoteIndex *index, ASQuery *nextQuery, NSDictionary *result) {
+        if (![nextQuery.fullTextQuery isEqualToString:query.fullTextQuery]) {
             return; // Query has changed
         }
         
-        self.loadedPage = [NSNumber numberWithUnsignedInteger:nextQuery.page];
+        loadedPage = nextQuery.page;
         NSArray *hits = result[@"hits"];
         
         NSMutableArray *tmp = [NSMutableArray array];
@@ -174,7 +174,7 @@
         }
         
         // Reload view with the loaded data
-        [self.movies addObjectsFromArray:tmp];
+        [movies addObjectsFromArray:tmp];
         [self.tableView reloadData];
     } failure:nil];
 }

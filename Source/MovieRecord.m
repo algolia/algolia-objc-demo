@@ -30,8 +30,8 @@
     if (self) {
         self.title = json[@"_highlightResult"][@"title"][@"value"];
         self.image = json[@"image"];
-        self.rating = json[@"rating"];
-        self.year = json[@"year"];
+        self.rating = [json[@"rating"] integerValue];
+        self.year = [json[@"year"] integerValue];
     }
     return self;
 }

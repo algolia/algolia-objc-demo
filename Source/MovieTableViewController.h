@@ -25,6 +25,4 @@
 
 @interface MovieTableViewController : UITableViewController <UISearchBarDelegate, UISearchResultsUpdating>
 
--(void) loadMore;
-
 @end
