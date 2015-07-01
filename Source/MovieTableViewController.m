@@ -68,6 +68,7 @@
     movieIndex = [apiClient getIndex:@"movies"];
     
     query = [[ASQuery alloc] init];
+    query.hitsPerPage = 15;
     query.attributesToRetrieve = @[@"title", @"image", @"rating", @"year"];
     query.attributesToHighlight = @[@"title"];
     
@@ -120,7 +121,7 @@
 
 #pragma mark - Search bar
 
--(void) updateSearchResultsForSearchController:(UISearchController *)searchController {
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
     query.fullTextQuery = self->searchController.searchBar.text;
     NSInteger curSearchId = searchId;
     
@@ -152,7 +153,7 @@
 
 #pragma mark - Load more
 
--(void) loadMore {
+- (void)loadMore {
     if (loadedPage + 1 >= nbPages) {
         return; // All pages already loaded
     }

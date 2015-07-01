@@ -25,7 +25,7 @@
 
 @interface MovieRecord : NSObject
 
--(instancetype) init:(NSDictionary*)json;
+- (instancetype)init:(NSDictionary*)json;
 
 @property (nonatomic) NSString *title;
 @property (nonatomic) NSString *image;

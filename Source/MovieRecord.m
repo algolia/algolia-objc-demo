@@ -25,7 +25,7 @@
 
 @implementation MovieRecord
 
--(instancetype)init:(NSDictionary *)json {
+- (instancetype)init:(NSDictionary *)json {
     self = [super init];
     if (self) {
         self.title = json[@"_highlightResult"][@"title"][@"value"];
