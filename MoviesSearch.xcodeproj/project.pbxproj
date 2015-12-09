@@ -199,6 +199,7 @@
 		5D2519F91B42A856003F46E8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = Algolia;
 				TargetAttributes = {
