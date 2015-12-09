@@ -30,4 +30,4 @@ SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   AlgoliaSearch-Client: 14240def2bd63a6600d8d482248a227158f9d2be
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.39.0
