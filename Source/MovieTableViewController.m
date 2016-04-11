@@ -23,7 +23,7 @@
 
 #import "MovieTableViewController.h"
 #import "MovieRecord.h"
-#import "ASAPIClient.h"
+#import "AlgoliaSearch-Swift.h"
 #import "UIImageView+AFNetworking.h"
 #import "MoviesSearch-Swift.h"
 
@@ -36,8 +36,9 @@
 @implementation MovieTableViewController {
     UISearchController *searchController;
 
-    ASRemoteIndex *movieIndex;
-    ASQuery *query;
+    Client* client;
+    Index *movieIndex;
+    Query *query;
     
     NSMutableArray *movies;
     
@@ -64,11 +65,11 @@
     [searchController.searchBar sizeToFit];
     
     // Algolia Search
-    ASAPIClient *apiClient = [ASAPIClient apiClientWithApplicationID:@"latency" apiKey:@"dce4286c2833e8cf4b7b1f2d3fa1dbcb"];
-    movieIndex = [apiClient getIndex:@"movies"];
+    client = [[Client alloc] initWithAppID:@"latency" apiKey:@"dce4286c2833e8cf4b7b1f2d3fa1dbcb"];
+    movieIndex = [client getIndex:@"movies"];
     
-    query = [[ASQuery alloc] init];
-    query.hitsPerPage = 15;
+    query = [[Query alloc] init];
+    query.hitsPerPage = [NSNumber numberWithInt:15];
     query.attributesToRetrieve = @[@"title", @"image", @"rating", @"year"];
     query.attributesToHighlight = @[@"title"];
     
@@ -122,10 +123,13 @@
 #pragma mark - Search bar
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
-    query.fullTextQuery = self->searchController.searchBar.text;
+    query.query = self->searchController.searchBar.text;
     NSInteger curSearchId = searchId;
     
-    [movieIndex search:query success:^(ASRemoteIndex *index, ASQuery *query, NSDictionary *result) {
+    [movieIndex search:query completionHandler:^(NSDictionary<NSString *,id>* result, NSError* error) {
+        if (error != nil) {
+            return;
+        }
         if (curSearchId <= displayedSearchId) {
             return; // Newest query already displayed
         }
@@ -146,7 +150,7 @@
         [movies removeAllObjects];
         [movies addObjectsFromArray:tmp];
         [self.tableView reloadData];
-    } failure:nil];
+    }];
     
     ++searchId;
 }
@@ -158,15 +162,18 @@
         return; // All pages already loaded
     }
     
-    ASQuery *nextQuery = [query copy];
-    nextQuery.page = loadedPage + 1;
+    Query *nextQuery = [query copy];
+    nextQuery.page = [NSNumber numberWithUnsignedInteger:loadedPage + 1];
     
-    [movieIndex search:nextQuery success:^(ASRemoteIndex *index, ASQuery *nextQuery, NSDictionary *result) {
-        if (![nextQuery.fullTextQuery isEqualToString:query.fullTextQuery]) {
+    [movieIndex search:nextQuery completionHandler:^(NSDictionary<NSString *,id>* result, NSError* error) {
+        if (error != nil) {
+            return;
+        }
+        if (![nextQuery.query isEqualToString:query.query]) {
             return; // Query has changed
         }
         
-        loadedPage = nextQuery.page;
+        loadedPage = nextQuery.page.intValue;
         NSArray *hits = result[@"hits"];
         
         NSMutableArray *tmp = [NSMutableArray array];
@@ -177,7 +184,7 @@
         // Reload view with the loaded data
         [movies addObjectsFromArray:tmp];
         [self.tableView reloadData];
-    } failure:nil];
+    }];
 }
 
 /*
