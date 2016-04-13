@@ -113,7 +113,7 @@
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld", movie.year];
     
     // Avoid loading image that we don't need anymore
-    [cell.imageView cancelImageRequestOperation];
+    [cell.imageView cancelImageDownloadTask];
     // Load the image and display another image during the loading
     [cell.imageView setImageWithURL:[NSURL URLWithString:movie.image] placeholderImage:placeholder];
     
