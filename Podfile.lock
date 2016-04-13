@@ -1,33 +1,37 @@
 PODS:
-  - AFNetworking (2.5.4):
-    - AFNetworking/NSURLConnection (= 2.5.4)
-    - AFNetworking/NSURLSession (= 2.5.4)
-    - AFNetworking/Reachability (= 2.5.4)
-    - AFNetworking/Security (= 2.5.4)
-    - AFNetworking/Serialization (= 2.5.4)
-    - AFNetworking/UIKit (= 2.5.4)
-  - AFNetworking/NSURLConnection (2.5.4):
+  - AFNetworking (2.6.3):
+    - AFNetworking/NSURLConnection (= 2.6.3)
+    - AFNetworking/NSURLSession (= 2.6.3)
+    - AFNetworking/Reachability (= 2.6.3)
+    - AFNetworking/Security (= 2.6.3)
+    - AFNetworking/Serialization (= 2.6.3)
+    - AFNetworking/UIKit (= 2.6.3)
+  - AFNetworking/NSURLConnection (2.6.3):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.5.4):
+  - AFNetworking/NSURLSession (2.6.3):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.5.4)
-  - AFNetworking/Security (2.5.4)
-  - AFNetworking/Serialization (2.5.4)
-  - AFNetworking/UIKit (2.5.4):
+  - AFNetworking/Reachability (2.6.3)
+  - AFNetworking/Security (2.6.3)
+  - AFNetworking/Serialization (2.6.3)
+  - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - AlgoliaSearch-Client (3.5.1):
-    - AFNetworking (~> 2.2)
+  - AlgoliaSearch-Client-Swift (3.0a1):
+    - AlgoliaSearch-Client-Swift/Online (= 3.0a1)
+  - AlgoliaSearch-Client-Swift/Online (3.0a1)
 
 DEPENDENCIES:
-  - AlgoliaSearch-Client (~> 3.5)
+  - AFNetworking (~> 2.0)
+  - AlgoliaSearch-Client-Swift (~> 3.0a1)
 
 SPEC CHECKSUMS:
-  AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
-  AlgoliaSearch-Client: 14240def2bd63a6600d8d482248a227158f9d2be
+  AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
+  AlgoliaSearch-Client-Swift: a2ac1a37e8519eeacbf8aa9ef228e8d28b449242
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: e55f666d989032929bd8c1e7898094e5cef02026
+
+COCOAPODS: 1.0.0.beta.2

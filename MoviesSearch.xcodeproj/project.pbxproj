@@ -16,7 +16,7 @@
 		5D251A2C1B42A926003F46E8 /* MovieTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D251A2B1B42A926003F46E8 /* MovieTableViewController.m */; };
 		5D251A311B42B6EA003F46E8 /* MovieRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D251A301B42B6EA003F46E8 /* MovieRecord.m */; };
 		5D251A341B42D630003F46E8 /* UILabel+Highlighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D251A331B42D630003F46E8 /* UILabel+Highlighting.swift */; };
-		AE5A7F7E470A0663D6DF8CF6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBB57602CC89747BA9DF18C /* libPods.a */; };
+		B131830715F0E541C00919B4 /* Pods_MoviesSearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBA08D43DA82335CE676EB6B /* Pods_MoviesSearch.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,7 +30,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3BBB57602CC89747BA9DF18C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D251A011B42A857003F46E8 /* MoviesSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoviesSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D251A051B42A857003F46E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D251A061B42A857003F46E8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -48,8 +47,9 @@
 		5D251A301B42B6EA003F46E8 /* MovieRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieRecord.m; sourceTree = "<group>"; };
 		5D251A331B42D630003F46E8 /* UILabel+Highlighting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Highlighting.swift"; sourceTree = "<group>"; };
 		5D251A351B42D906003F46E8 /* MoviesSearch-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MoviesSearch-Bridging-Header.h"; sourceTree = "<group>"; };
-		5FB7611425DF260A9EEC8304 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		8D54041166B198F381B4ABEC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		601DBA45C31079C5D9E7660D /* Pods-MoviesSearch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoviesSearch.release.xcconfig"; path = "Pods/Target Support Files/Pods-MoviesSearch/Pods-MoviesSearch.release.xcconfig"; sourceTree = "<group>"; };
+		C55FB34A0A56C3568DF112D4 /* Pods-MoviesSearch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoviesSearch.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MoviesSearch/Pods-MoviesSearch.debug.xcconfig"; sourceTree = "<group>"; };
+		EBA08D43DA82335CE676EB6B /* Pods_MoviesSearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoviesSearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE5A7F7E470A0663D6DF8CF6 /* libPods.a in Frameworks */,
+				B131830715F0E541C00919B4 /* Pods_MoviesSearch.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,23 +71,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0579521EC212E67E035E1BE9 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				5FB7611425DF260A9EEC8304 /* Pods.debug.xcconfig */,
-				8D54041166B198F381B4ABEC /* Pods.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		5D2519F81B42A856003F46E8 = {
 			isa = PBXGroup;
 			children = (
 				5D251A031B42A857003F46E8 /* Source */,
 				5D251A1D1B42A857003F46E8 /* Tests */,
 				5D251A021B42A857003F46E8 /* Products */,
-				0579521EC212E67E035E1BE9 /* Pods */,
-				CF56B794A32808DC4DFFDC5E /* Frameworks */,
+				E60C091BC08FB9D20444C2D0 /* Pods */,
+				D2D0F6A1F3BF054EF16AA767 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -145,12 +136,21 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		CF56B794A32808DC4DFFDC5E /* Frameworks */ = {
+		D2D0F6A1F3BF054EF16AA767 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3BBB57602CC89747BA9DF18C /* libPods.a */,
+				EBA08D43DA82335CE676EB6B /* Pods_MoviesSearch.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E60C091BC08FB9D20444C2D0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C55FB34A0A56C3568DF112D4 /* Pods-MoviesSearch.debug.xcconfig */,
+				601DBA45C31079C5D9E7660D /* Pods-MoviesSearch.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -160,11 +160,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5D251A241B42A857003F46E8 /* Build configuration list for PBXNativeTarget "MoviesSearch" */;
 			buildPhases = (
-				C968DB762113F45A89F8C6D1 /* Check Pods Manifest.lock */,
+				C1941AB0C1771790BE9342B6 /* Check Pods Manifest.lock */,
 				5D2519FD1B42A856003F46E8 /* Sources */,
 				5D2519FE1B42A856003F46E8 /* Frameworks */,
 				5D2519FF1B42A856003F46E8 /* Resources */,
-				BDEAD244924800D3242C4BF2 /* Copy Pods Resources */,
+				7F29DD2E48485F6BB6701646 /* Embed Pods Frameworks */,
+				24B3D480249FFBD6241D631C /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -252,7 +253,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		BDEAD244924800D3242C4BF2 /* Copy Pods Resources */ = {
+		24B3D480249FFBD6241D631C /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -264,10 +265,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MoviesSearch/Pods-MoviesSearch-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C968DB762113F45A89F8C6D1 /* Check Pods Manifest.lock */ = {
+		7F29DD2E48485F6BB6701646 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MoviesSearch/Pods-MoviesSearch-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C1941AB0C1771790BE9342B6 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -417,7 +433,7 @@
 		};
 		5D251A251B42A857003F46E8 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5FB7611425DF260A9EEC8304 /* Pods.debug.xcconfig */;
+			baseConfigurationReference = C55FB34A0A56C3568DF112D4 /* Pods-MoviesSearch.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -433,7 +449,7 @@
 		};
 		5D251A261B42A857003F46E8 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8D54041166B198F381B4ABEC /* Pods.release.xcconfig */;
+			baseConfigurationReference = 601DBA45C31079C5D9E7660D /* Pods-MoviesSearch.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
