@@ -21,11 +21,13 @@
 //  THE SOFTWARE.
 //
 
+@import AFNetworking;
+@import AlgoliaSearch;
+
 #import "MovieTableViewController.h"
 #import "MovieRecord.h"
-#import "AlgoliaSearch-Swift.h"
-#import "UIImageView+AFNetworking.h"
-#import "MoviesSearch-Swift.h"
+#import "MoviesSearch-Swift.h" // for `UILabel(Highlighting)`
+
 
 @interface MovieTableViewController ()
 
