@@ -68,7 +68,7 @@
     
     // Algolia Search
     client = [[Client alloc] initWithAppID:@"latency" apiKey:@"dce4286c2833e8cf4b7b1f2d3fa1dbcb"];
-    movieIndex = [client getIndex:@"movies"];
+    movieIndex = [client indexWithName:@"movies"];
     
     query = [[Query alloc] init];
     query.hitsPerPage = [NSNumber numberWithInt:15];
