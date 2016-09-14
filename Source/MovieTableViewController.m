@@ -164,7 +164,7 @@
         return; // All pages already loaded
     }
     
-    Query *nextQuery = [query copy];
+    Query *nextQuery = [[Query alloc] initWithCopy:query];
     nextQuery.page = [NSNumber numberWithUnsignedInteger:loadedPage + 1];
     
     [movieIndex search:nextQuery completionHandler:^(NSDictionary<NSString *,id>* result, NSError* error) {
