@@ -23,15 +23,14 @@
 
 @import AFNetworking;
 @import AlgoliaSearch;
+@import InstantSearchCore;
 
 #import "MovieTableViewController.h"
 #import "MovieRecord.h"
 #import "MoviesSearch-Swift.h" // for `UILabel(Highlighting)`
 
 
-@interface MovieTableViewController ()
-
--(void) loadMore;
+@interface MovieTableViewController () <SearcherDelegate>
 
 @end
 
@@ -40,21 +39,18 @@
 
     Client* client;
     Index *movieIndex;
-    Query *query;
+    Searcher *movieSearcher;
     
     NSMutableArray *movies;
-    
-    NSInteger searchId;
-    NSInteger displayedSearchId;
-    NSUInteger loadedPage;
-    NSUInteger nbPages;
     
     UIImage *placeholder;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
+    placeholder = [UIImage imageNamed:@"white"];
+
     // Search controller
     searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     searchController.searchResultsUpdater = self;
@@ -66,30 +62,22 @@
     self.definesPresentationContext = YES;
     [searchController.searchBar sizeToFit];
     
-    // Algolia Search
+    // Initialize Algolia Search.
     client = [[Client alloc] initWithAppID:@"latency" apiKey:@"dce4286c2833e8cf4b7b1f2d3fa1dbcb"];
     movieIndex = [client indexWithName:@"movies"];
+    movieSearcher = [[Searcher alloc] initWithIndex:movieIndex];
+    movieSearcher.delegate = self;
     
-    query = [[Query alloc] init];
-    query.hitsPerPage = [NSNumber numberWithInt:15];
-    query.attributesToRetrieve = @[@"title", @"image", @"rating", @"year"];
-    query.attributesToHighlight = @[@"title"];
+    // Configure default search criteria.
+    movieSearcher.params.hitsPerPage = @15;
+    movieSearcher.params.attributesToRetrieve = @[@"title", @"image", @"rating", @"year"];
+    movieSearcher.params.attributesToHighlight = @[@"title"];
     
+    // Reset data.
     movies = [NSMutableArray array];
-    searchId = 0;
-    displayedSearchId = -1;
-    loadedPage = 0;
-    nbPages = 0;
-    
-    placeholder = [UIImage imageNamed:@"white"];
-    
+
     // First load
     [self updateSearchResultsForSearchController:searchController];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
@@ -106,7 +94,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"movieCell" forIndexPath:indexPath];
     
     if (indexPath.row + 5 >= [movies count]) {
-        [self loadMore];
+        [movieSearcher loadMore];
     }
     
     MovieRecord *movie = movies[indexPath.row];
@@ -125,78 +113,35 @@
 #pragma mark - Search bar
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
-    query.query = self->searchController.searchBar.text;
-    NSInteger curSearchId = searchId;
-    
-    [movieIndex search:query completionHandler:^(NSDictionary<NSString *,id>* result, NSError* error) {
-        if (error != nil) {
-            return;
-        }
-        if (curSearchId <= displayedSearchId) {
-            return; // Newest query already displayed
-        }
-        
-        displayedSearchId = curSearchId;
-        loadedPage = 0; // Reset loaded page
-        
-        // Decode JSON
-        NSArray *hits = result[@"hits"];
-        nbPages = [result[@"nbPages"] integerValue];
-        
-        NSMutableArray *tmp = [NSMutableArray array];
-        for (int i = 0; i < [hits count]; ++i) {
-            [tmp addObject:[[MovieRecord alloc] init:hits[i]]];
-        }
-        
-        // Reload view with the new data
-        [movies removeAllObjects];
-        [movies addObjectsFromArray:tmp];
-        [self.tableView reloadData];
-    }];
-    
-    ++searchId;
+    movieSearcher.params.query = self->searchController.searchBar.text;
+    [movieSearcher search];
 }
 
-#pragma mark - Load more
+#pragma mark - SearcherDelegate
 
-- (void)loadMore {
-    if (loadedPage + 1 >= nbPages) {
-        return; // All pages already loaded
+- (void)searcher:(Searcher *)searcher didReceiveResults:(SearchResults *)results error:(NSError *)error forParams:(SearchParameters *)params {
+    if (error != nil) {
+        return;
     }
     
-    Query *nextQuery = [[Query alloc] initWithCopy:query];
-    nextQuery.page = [NSNumber numberWithUnsignedInteger:loadedPage + 1];
+    // Decode JSON.
+    NSArray *hits = [results hits];
+    NSMutableArray *tmp = [NSMutableArray array];
+    for (int i = 0; i < [hits count]; ++i) {
+        [tmp addObject:[[MovieRecord alloc] init:hits[i]]];
+    }
     
-    [movieIndex search:nextQuery completionHandler:^(NSDictionary<NSString *,id>* result, NSError* error) {
-        if (error != nil) {
-            return;
-        }
-        if (![nextQuery.query isEqualToString:query.query]) {
-            return; // Query has changed
-        }
-        
-        loadedPage = nextQuery.page.intValue;
-        NSArray *hits = result[@"hits"];
-        
-        NSMutableArray *tmp = [NSMutableArray array];
-        for (int i = 0; i < [hits count]; ++i) {
-            [tmp addObject:[[MovieRecord alloc] init:hits[i]]];
-        }
-        
-        // Reload view with the loaded data
-        [movies addObjectsFromArray:tmp];
-        [self.tableView reloadData];
-    }];
+    // Reload view with the new data.
+    if (results.page == 0) {
+        [movies removeAllObjects];
+    }
+    [movies addObjectsFromArray:tmp];
+    [self.tableView reloadData];
+    
+    // Scroll to top if not a "load more".
+    if (results.page == 0) {
+        self.tableView.contentOffset = CGPointZero;
+    }
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
