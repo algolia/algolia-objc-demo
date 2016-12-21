@@ -14,7 +14,7 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
-  - AlgoliaSearch-Client-Swift (4.0)
+  - AlgoliaSearch-Client-Swift (4.5)
 
 DEPENDENCIES:
   - AFNetworking (~> 3.0)
@@ -22,8 +22,8 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  AlgoliaSearch-Client-Swift: ef8ae01f8c546d788777b107d79fe641c11a31ab
+  AlgoliaSearch-Client-Swift: c7662215a44392430635a922234c1c04e64ee17b
 
 PODFILE CHECKSUM: 91e30d3e9e2f6384b34403dd92966c9a11caf45e
 
-COCOAPODS: 1.1.0.rc.2
+COCOAPODS: 1.2.0.beta.1
